@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle do Arduino</title>
+</head>
+<body>
+    <h1>Controle do LED Arduino</h1>
+    <button onclick="enviarComando('ligar')">Ligar LED</button>
+    <button onclick="enviarComando('desligar')">Desligar LED</button>
+    <p id="resposta"></p>
+
+    <script>
+        function enviarComando(comando) {
+            fetch('/controlar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `comando=${comando}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('resposta').innerText = data.status;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+        }
+    </script>
+</body>
+</html>
